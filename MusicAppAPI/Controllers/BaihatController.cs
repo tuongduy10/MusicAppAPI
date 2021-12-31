@@ -23,13 +23,12 @@ namespace MusicAppAPI.Controllers
             return Ok(new { status = true, data = listBaihat });
         }
 
-        [Route("getBaihatById/{id}")]
+        [Route("getBaihatByName/{name}")]
         [HttpGet]
-        public IActionResult getTheloaiList(int id)
+        public IActionResult getTheloaiList(string name)
         {
-            var baihat = context.Baihats.FirstOrDefault(bh => bh.IdBaihat == id);
-
-            return Ok(new { status = true, data = baihat });
+            var result = from baihat in context.Baihats where baihat.Tenbaihat.Contains(name) select baihat;
+            return Ok(new { status = true, data = result.ToList() });
         }
     }
 }
