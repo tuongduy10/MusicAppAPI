@@ -16,7 +16,7 @@ namespace MusicAppAPI.Controllers
 
         [Route("login")]
         [HttpGet]
-        public IActionResult login([FromBody] Taikhoan taikhoan)
+        public IActionResult login([FromBody]Taikhoan taikhoan)
         {
             var result = context.Taikhoans.FirstOrDefault(rs => rs.IdTaikhoan == taikhoan.IdTaikhoan && rs.Matkhau == taikhoan.Matkhau);
             if (result != null)
@@ -31,14 +31,22 @@ namespace MusicAppAPI.Controllers
         [HttpPost]
         public IActionResult register([FromBody] Taikhoan taikhoan)
         {
-            //var result = context.Taikhoans.FirstOrDefault(rs => rs.IdTaikhoan == taikhoan.IdTaikhoan && rs.Matkhau == taikhoan.Matkhau);
-            //if (result != null)
-            //{
-            //    return Ok(new { status = true, data = "Login successfully" });
-            //}
+            try
+            {
+                Taikhoan newUser = new Taikhoan();
+                newUser.IdTaikhoan = taikhoan.IdTaikhoan;
+                newUser.Matkhau = taikhoan.Matkhau;
+                newUser.Tennguoidung = taikhoan.Tennguoidung;
 
-            //return NotFound(new { status = false, data = "Login unsuccessfully" });
-            return Ok();
+                context.Taikhoans.Add(newUser);
+                context.SaveChanges();
+
+                return Ok(new { status = true, data = "Register successfully" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest( new { status= false, data = e.ToString()} );
+            }       
         }
     }
 }
