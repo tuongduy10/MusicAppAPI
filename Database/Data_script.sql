@@ -1,7 +1,7 @@
 ﻿INSERT INTO Taikhoan VALUES('user','user','Account Test')
 
-INSERT INTO PlayList VALUES(N'List nhạc hay của tui',1)
-INSERT INTO PlayList VALUES(N'List nhạc edm cực cháy',1)
+INSERT INTO PlayList VALUES(N'List nhạc hay của tui','user')
+INSERT INTO PlayList VALUES(N'List nhạc edm cực cháy','user')
 
 INSERT INTO Casi VALUES('Ed Sheeran', 'Ed Sheeran', 'https://firebasestorage.googleapis.com/v0/b/gongchaapplication-a6314.appspot.com/o/edsheeran.jpeg?alt=media&token=7255aa77-33f3-40d4-a0ec-6d93fe604fbc')
 INSERT INTO Casi VALUES('Dua Lipa', 'Dua Lipa', 'https://firebasestorage.googleapis.com/v0/b/gongchaapplication-a6314.appspot.com/o/dualipa.jpg?alt=media&token=4bb66e9b-ac23-46d5-b36b-59d3ced1d0d2')
