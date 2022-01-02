@@ -16,22 +16,57 @@ namespace MusicAppAPI.Controllers
 
         [Route("getPlaylist")]
         [HttpGet]
-        public IActionResult getPlaylist()
+        public async Task<IActionResult> getPlaylist()
         {
-            var playlist = context.PlayLists.ToList();
+            try
+            {
+                var playlist = context.PlayLists.ToList();
 
-            return Ok(new { status = true, data = playlist });
+                return Ok(new { status = true, data = playlist });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { status = false, data = e.ToString() });
+            }
         }
 
         [Route("getPlaylistById/{id}")]
         [HttpGet]
-        public IActionResult getPlaylist(int id)
+        public async Task<IActionResult> getPlaylist(int id)
         {
-            //
-            var playlist = context.PlayLists.FirstOrDefault(pl => pl.IdPlayList == id);
+            try
+            {
+                var playlist = context.PlayLists.FirstOrDefault(pl => pl.IdPlayList == id);
 
-            return Ok(new { status = true, data = playlist }); 
+                return Ok(new { status = true, data = playlist });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { status = false, data = e.ToString() });
+            }
         }
-        
+
+        [Route("addNewPlayList/{name}")]
+        [HttpPost]
+        public async Task<IActionResult> addNewPlayList(string name)
+        {
+            try
+            {
+                string id = HttpContext.Session.GetString("IdTaikhoan");
+
+                PlayList newPlayList = new PlayList();
+                newPlayList.TenPlayList = name;
+                newPlayList.Idtaikhoan = id;
+
+                context.PlayLists.Add(newPlayList);
+                context.SaveChanges();
+
+                return Ok(new { status = true, data = "Add new Playlist successfully" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { status = false, data = e.ToString() });
+            }
+        }        
     }
 }

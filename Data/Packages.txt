@@ -1,3 +1,4 @@
 Microsoft.Entity.FrameworkCore.SqlServer (5.0.7)
 Microsoft.Entity.FrameworkCore.Tools (5.0.7)
 Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore (5.0.7)
+Microsoft.AspNetCore.Session
