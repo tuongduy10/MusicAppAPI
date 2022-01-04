@@ -15,7 +15,7 @@ namespace MusicAppAPI.Controllers
         MusicAppContext context = new MusicAppContext();
 
         [Route("login")]
-        [HttpGet]
+        [HttpPost]
         public IActionResult login([FromBody]Taikhoan taikhoan)
         {
             try
@@ -24,13 +24,13 @@ namespace MusicAppAPI.Controllers
                 if (result != null)
                 {
                     HttpContext.Session.SetString("IdTaikhoan", taikhoan.IdTaikhoan);
-                    return Ok(new { status = true, data = "Login successfully" });
+                    return Ok(new { status = "success", data = "Login successfully" });
                 }
-                return NotFound(new { status = false, data = "Login unsuccessfully" });
+                return NotFound(new { status = "fail", data = "Login unsuccessfully" });
             }
             catch (Exception e)
             {
-                return BadRequest(new { status = false, data = e.ToString() });
+                return BadRequest(new { status = "fail", data = e.ToString() });
             }
         }
 
@@ -43,7 +43,7 @@ namespace MusicAppAPI.Controllers
                 var findUser = context.Taikhoans.FirstOrDefault(tk => tk.IdTaikhoan == taikhoan.IdTaikhoan);
                 if (findUser != null)
                 {
-                    return BadRequest(new { status = false, data = "Username is already exist" });
+                    return BadRequest(new { status = "fail", data = "Username is already exist" });
                 }
                 Taikhoan newUser = new Taikhoan();
                 newUser.IdTaikhoan = taikhoan.IdTaikhoan;
@@ -53,11 +53,11 @@ namespace MusicAppAPI.Controllers
                 context.Taikhoans.Add(newUser);
                 context.SaveChanges();
 
-                return Ok(new { status = true, data = "Register successfully" });
+                return Ok(new { status = "success", data = "Register successfully" });
             }
             catch (Exception e)
             {
-                return BadRequest( new { status= false, data = e.ToString()} );
+                return BadRequest( new { status = "fail", data = e.ToString()} );
             }       
         }
     }
