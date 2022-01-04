@@ -16,19 +16,65 @@ namespace MusicAppAPI.Controllers
 
         [Route("getBaihatList")]
         [HttpGet]
-        public IActionResult getTheloaiList()
+        public async Task<IActionResult> getTheloaiList()
         {
             var listBaihat = context.Baihats.ToList();
 
-            return Ok(new { status = true, data = listBaihat });
+            return Ok(new { status = "success", data = listBaihat });
         }
 
         [Route("getBaihatByName/{name}")]
         [HttpGet]
-        public IActionResult getTheloaiList(string name)
+        public async Task<IActionResult> getBaihatByName(string name)
         {
-            var result = from baihat in context.Baihats where baihat.Tenbaihat.Contains(name) select baihat;
-            return Ok(new { status = true, data = result.ToList() });
+            try
+            {
+                var result = from baihat in context.Baihats where baihat.Tenbaihat.Contains(name) select baihat;
+                return Ok(new { status = "success", data = result.ToList() });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { status = "fail", data = "Fail to get" });
+            }
+        }
+
+        [Route("getBaihatByCasi/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> getBaihatByCasi(int id)
+        {
+            try
+            {
+                var result = from baihat in context.Baihats
+                             from chitiet in context.ChitietBaihats
+                             where baihat.IdBaihat == chitiet.IdBaihat && chitiet.IdCasi == id
+                             select baihat;
+
+                return Ok(new { status = "success", data = result.ToList() });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { status = "fail", data = "Fail to get" });
+            }
+        }
+
+        [Route("addBaihatToPlaylist")]
+        [HttpPost]
+        public async Task<IActionResult> addBaihatToPlaylist([FromBody] ChitietPlayList chitiet)
+        {
+            try
+            {
+                ChitietPlayList chitietPlaylist = new ChitietPlayList();
+                chitietPlaylist.IdPlayList = chitiet.IdBaihat;
+                chitietPlaylist.IdBaihat = chitiet.IdBaihat;
+                context.ChitietPlayLists.Add(chitietPlaylist);
+                context.SaveChanges();
+
+                return Ok(new { status = "success", data = "Add successfully" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { status = "fail", data = "Fail to add this song to your playlist"});
+            }
         }
     }
 }
